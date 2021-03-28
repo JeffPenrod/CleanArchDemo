@@ -1,4 +1,5 @@
 using CleanArch.Mvc.Data;
+using CleanArch.Infra.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace CleanArch.Mvc
 {
@@ -30,7 +32,13 @@ namespace CleanArch.Mvc
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("UniversityIdentityDBConnection")));
+            
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddDbContext<UniversityDBContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("UniversityDBConnection"));
+            });
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
